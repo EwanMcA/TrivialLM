@@ -28,11 +28,6 @@ def read_root():
 def generate_trivia():
     return """
     <html>
-        <head>
-            <title>Some HTML in here</title>
-        </head>
-        <body>
-            <h1>Look ma! HTML!</h1>
-        </body>
+        <h1>Look ma! HTML!</h1>
     </html>
     """
