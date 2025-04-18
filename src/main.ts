@@ -24,7 +24,7 @@ class MainPage extends HTMLElement {
           <option value="South America">South America</option>
           <option value="Pacific">Pacific</option>
         </select>
-        <button hx-post="/generate-trivia" hx-target="#trivia-questions" hx-swap="innerHTML">Generate Trivia</button>
+        <button hx-post="http://127.0.0.1:8000/generate-trivia" hx-target="#trivia-questions" hx-swap="innerHTML">Generate Trivia</button>
       </form>
       <div id="trivia-questions"></div>
     `;
