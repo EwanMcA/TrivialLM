@@ -5,35 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <meta name="htmx-config" content='{"selfRequestsOnly":false}'>
-    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
     <title>TriviaLLM</title>
   </head>
   <body>
-     <h1>TrivialLM</h1>
      <nav>
+       <h1>TrivialLM</h1>
        <ul>
          <li>
            <a href="#" class="button-link"
               hx-get="/quiz/random"
-              hx-target="#quiz-content"
               hx-swap="innerHTML"
               hx-indicator="#loading-quiz">
-               Create Random Quiz
+               Create Quiz
                <span id="loading-quiz" class="htmx-indicator">...</span>
            </a>
          </li>
        </ul>
      </nav>
-     <main>
-       <section id="quiz-content" aria-live="polite">
-       <p>Click "Create Random Quiz" above to start!</p>
-       </section>
-
+     <main id="main-content">
        <section id="leagues-section">
-           <h2>My Quiz Leagues</h2>
+           <h2>My Leagues</h2>
            <div id="leagues-list">
             {% for league in leagues %}
-              <a href="/leagues/{{ league.id }}">
+              <a href="#" 
+                hx-get="/leagues/{{ league.id }}"
+                hx-target="#main-content"
+                hx-swap="innerHTML"
+                hx-indicator="#loading-league">
+                <div id="loading-league" class="htmx-indicator">...</div>
                 {{ league.name }}
               </a>
             {% endfor %}
