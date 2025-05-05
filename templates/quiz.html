@@ -1,0 +1,18 @@
+<div>
+  <a href="/">Back</a>
+</div>
+<h1>Quiz</h1>
+<div>
+  {% for question in quiz.questions %}
+  <p>{{ loop.index }}: {{ question.question }}</p>
+  {% set outer_loop = loop %}
+  <ul>
+    {% for option in question.choices %}
+      <li>
+        <input type="radio" name="question-{{ outer_loop.index }}" value="{{ loop.index }}">
+        {{ option }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>

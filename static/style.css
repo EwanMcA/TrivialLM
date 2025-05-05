@@ -3,93 +3,129 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --bg-color: #e8e2ef;
+  --bg-color-darkened: #e8e2ef;
+  --text-color: #DCA06D;
+  --light-text-color: #333;
+  --primary-color: #cf996a;
+  --accent-color: #f4a8ab; /* Soft pastel rose */
+  --border-color: #e0e0e0; /* Light grey for subtle borders */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --main-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
 }
 
-nav {
-  align-items: center;
-  background-color: #333;
-  display: flex;
-  padding: 1rem;
-  height: 60px;
-
-  ul {
-    list-style: none;
-  }
+html {
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
   margin: 0;
-}
-
-main {
-  padding: 2rem;
-}
-
-.multi {
+  padding: 0;
+  font-family: var(--main-font);
+  background: linear-gradient(0, var(--bg-color-darkened) 80%, var(--bg-color));
+  color: var(--light-text-color);
+  line-height: 1.6;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  min-height: 100vh;
 }
 
-form {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 600px;
+nav {
+  background-color: var(--bg-color);
+  padding: var(--spacing-medium) var(--spacing-large);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+nav h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  font-weight: 600;
 }
 
-select {
-    height: 200px;
-    width: 100%; /* Make select take full width of its container */
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-    font-size: 16px;
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #007bff #333; /* Scrollbar color */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Keeps items in a row if more are added */
 }
 
-button {
-    background-color: #007bff; /* Primary blue color */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+nav li {
+  margin-left: var(--spacing-medium); /* Space between nav items if more are added */
 }
 
-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
 }
 
-#trivia-questions {
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
+a:hover, a:focus {
+  color: var(--accent-color);
 }
+
+.button-link {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: var(--light-text-color);
+  padding: var(--spacing-small) var(--spacing-medium);
+  border-radius: 4px;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.button-link:hover, .button-link:focus {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+main#main-content {
+  flex-grow: 1; /* Ensures main content takes up available space */
+  padding: var(--spacing-large);
+  max-width: 900px; /* Limit content width for readability */
+  margin: 0 auto; /* Center content area */
+  width: 100%;
+}
+
+#leagues-section h2 {
+  font-size: 1.75rem;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-medium);
+  font-weight: 400;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-small);
+}
+
+#leagues-list {
+  display: grid;
+  gap: var(--spacing-medium);
+}
+
+#leagues-list a {
+  display: block;
+  padding: var(--spacing-medium);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  color: var(--light-text-color);
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+#leagues-list a:hover,
+#leagues-list a:focus {
+  border-color: #d1c4e9;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  color: var(--text-color);
+  filter: brightness(0.8);
+}
+
+.htmx-indicator { display: none; }
+.htmx-request .htmx-indicator { display: inline; opacity: 1; } 

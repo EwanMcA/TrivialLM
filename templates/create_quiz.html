@@ -1,0 +1,67 @@
+<div>
+  <a href="/">Back</a>
+</div>
+<form hx-post="/generate-quiz" hx-indicator="#loading-quiz" hx-swap="innerHTML" hx-target="#main-content">
+  <fieldset>
+    <legend>Basic Settings</legend>
+
+    <div>
+      <label for="num_questions">Number of Questions:</label>
+      <input type="number" id="num_questions" name="num_questions" min="1" max="30" value="10">
+      <small>(max 30)</small>
+    </div>
+    <br> <div>
+      <p><strong>Difficulty:</strong></p> <input type="radio" id="difficulty_any" name="difficulty" value="any" checked>
+      <label for="difficulty_any">Any Difficulty</label><br>
+
+      <input type="radio" id="difficulty_easy" name="difficulty" value="easy">
+      <label for="difficulty_easy">Easy</label><br>
+
+      <input type="radio" id="difficulty_medium" name="difficulty" value="medium">
+      <label for="difficulty_medium">Medium</label><br>
+
+      <input type="radio" id="difficulty_hard" name="difficulty" value="hard">
+      <label for="difficulty_hard">Hard</label><br>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Content</legend>
+    <div>
+      <div>
+        <input type="checkbox" id="general_knowledge" name="general_knowledge" />
+        <label for="General Knowledge">General Knowledge</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="history" name="history" />
+        <label for="History">History</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="science" name="science" />
+        <label for="Science">Science</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="geography" name="geography" />
+        <label for="Geography">Geography</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="entertainment_books" name="entertainment_books" />
+        <label for="Entertainment: Books">Entertainment: Books</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="entertainment_film_tv" name="entertainment_film_tv" />
+        <label for="Entertainment: Film & TV">Entertainment: Film & TV</label>
+      </div>
+    </div>
+  </fieldset>
+
+  <br> <div>
+    <span id="loading-quiz" class="htmx-indicator">...</span>
+    <button type="submit">Generate Quiz!</button>
+  </div>
+
+</form>
