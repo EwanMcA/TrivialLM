@@ -8,7 +8,7 @@
   {% set outer_loop = loop %}
   <ul>
     {% for option in question.choices %}
-      <li>
+      <li class="answer-choice">
         <input type="radio" name="question-{{ outer_loop.index }}" value="{{ loop.index }}">
         {{ option }}
       </li>

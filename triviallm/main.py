@@ -1,13 +1,14 @@
+from typing import Annotated, Optional
 from google import genai
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import Depends, FastAPI, Form, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-from sqlmodel import select
+from sqlmodel import select, Session
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .db import SessionDep, create_db_and_tables
+from .db import create_db_and_tables, get_session
 from .models import League, Team
 
 
@@ -30,7 +31,11 @@ def main(request: Request):
             "leagues": [
                 {"name": "League 1", "id": 1, "teams": [{"name": "Team 1"}, {"name": "Team 2"}]},
                 {"name": "League 2", "id": 2, "teams": [{"name": "Team 1"}, {"name": "Team 2"}]},
-            ]
+            ],
+            "quizzes": [
+                {"name": "Quiz 1", "id": 1},
+                {"name": "Quiz 2", "id": 2},
+            ],
         }
     )
 
@@ -39,12 +44,6 @@ def create_quiz(request: Request):
     return templates.TemplateResponse(
         request=request, name="create_quiz.html", context={}
     )
-
-
-class QuizCreate(BaseModel):
-    num_questions: int
-    difficulty: str
-    topics: list[str]
 
 
 class Question(BaseModel):
@@ -58,19 +57,20 @@ class Quiz(BaseModel):
 
 
 @app.post("/generate-quiz", response_class=HTMLResponse)
-def generate_quiz(request: Request, body: QuizCreate):
+def generate_quiz(
+    request: Request,
+    num_questions: Annotated[int, Form()],
+    difficulty: Annotated[str, Form()],
+    topics: Annotated[list[str], Form()],
+    db_session: Annotated[Session, Depends(get_session)]
+):
     response = gemini.models.generate_content(
         model="gemini-2.0-flash",
         contents=(
-            f"Generate a quiz with {body['num_questions']} questions. "
-            f"Difficulty: {body['difficulty']}. "
-            "Include questions from the following categories (if True): "
-            f"General Knowledge: {body['general_knowledge']}. "
-            f"History: {body['history']}. "
-            f"Science: {body['science']}. "
-            f"Geography: {body['geography']}. "
-            f"Entertainment (Books): {body['entertainment_books']}. "
-            f"Entertainment (Film/TV): {body['entertainment_film_tv']}."
+            f"Generate a quiz with {num_questions} questions. "
+            f"Difficulty: {difficulty}. "
+            "Include questions from the following categories: "
+            f"{', '.join(topics)}. "
         ),
         config={
         'response_mime_type': 'application/json',
@@ -86,8 +86,12 @@ def generate_quiz(request: Request, body: QuizCreate):
 
 
 @app.get("/leagues/{league_id}", response_class=HTMLResponse)
-def league(request: Request, league_id: int, session: SessionDep):
-    league = session.exec(select(League).where(League.id == league_id)).first()
+def league(
+    request: Request,
+    league_id: int, 
+    db_session: Annotated[Session, Depends(get_session)],
+):
+    league = db_session.exec(select(League).where(League.id == league_id)).first()
 
     return templates.TemplateResponse(
         request=request, name="league.html", context={
@@ -100,11 +104,11 @@ class LeagueCreate(BaseModel):
     name: str
 
 @app.post("/leagues")
-def create_league(body: LeagueCreate, session: SessionDep) -> League:
+def create_league(body: LeagueCreate, db_session: Annotated[Session, Depends(get_session)]) -> League:
     league = League(name=body.name)
-    session.add(league)
-    session.commit()
-    session.refresh(league)
+    db_session.add(league)
+    db_session.commit()
+    db_session.refresh(league)
     return league
 
 
@@ -112,14 +116,17 @@ class TeamCreate(BaseModel):
     name: str
 
 @app.post("/leagues/{league_id}/teams")
-def create_team(league_id: int, body: TeamCreate, session: SessionDep) -> Team:
-    league = session.exec(select(League).where(League.id == league_id)).first()
+def create_team(
+    league_id: int,
+    body: TeamCreate,
+    db_session: Annotated[Session, Depends(get_session)],
+) -> Team:
+    league = db_session.exec(select(League).where(League.id == league_id)).first()
     if body.name in [team.name for team in league.teams]:
         raise HTTPException(status_code=409, detail="Name not available")
 
     team = Team(name=body.name, league_id=league_id)
-    session.add(team)
-    session.commit()
-    session.refresh(team)
+    db_session.add(team)
+    db_session.commit()
+    db_session.refresh(team)
     return team
-

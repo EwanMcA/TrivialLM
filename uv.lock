@@ -713,6 +713,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "google-genai" },
     { name = "jinja2" },
+    { name = "python-multipart" },
     { name = "sqlmodel" },
 ]
 
@@ -721,6 +722,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
     { name = "google-genai", specifier = ">=1.11.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
 ]
 

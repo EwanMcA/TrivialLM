@@ -1,7 +1,13 @@
 <div>
   <a href="/">Back</a>
 </div>
-<form hx-post="/generate-quiz" hx-indicator="#loading-quiz" hx-swap="innerHTML" hx-target="#main-content">
+
+<form hx-post="/generate-quiz"
+      hx-indicator="#loading-quiz"
+      hx-swap="innerHTML"
+      hx-target="#main-content"
+      hx-ext="json-enc">
+
   <fieldset>
     <legend>Basic Settings</legend>
 
@@ -10,8 +16,10 @@
       <input type="number" id="num_questions" name="num_questions" min="1" max="30" value="10">
       <small>(max 30)</small>
     </div>
-    <br> <div>
-      <p><strong>Difficulty:</strong></p> <input type="radio" id="difficulty_any" name="difficulty" value="any" checked>
+    <br>
+    <div>
+      <p><strong>Difficulty:</strong></p>
+      <input type="radio" id="difficulty_any" name="difficulty" value="any" checked>
       <label for="difficulty_any">Any Difficulty</label><br>
 
       <input type="radio" id="difficulty_easy" name="difficulty" value="easy">
@@ -24,42 +32,44 @@
       <label for="difficulty_hard">Hard</label><br>
     </div>
   </fieldset>
+
   <fieldset>
     <legend>Content</legend>
     <div>
       <div>
-        <input type="checkbox" id="general_knowledge" name="general_knowledge" />
-        <label for="General Knowledge">General Knowledge</label>
+        <input type="checkbox" id="general_knowledge" name="topics" value="general_knowledge" />
+        <label for="general_knowledge">General Knowledge</label>
       </div>
 
       <div>
-        <input type="checkbox" id="history" name="history" />
-        <label for="History">History</label>
+        <input type="checkbox" id="history" name="topics" value="history" />
+        <label for="history">History</label>
       </div>
 
       <div>
-        <input type="checkbox" id="science" name="science" />
-        <label for="Science">Science</label>
+        <input type="checkbox" id="science" name="topics" value="science" />
+        <label for="science">Science</label>
       </div>
 
       <div>
-        <input type="checkbox" id="geography" name="geography" />
-        <label for="Geography">Geography</label>
+        <input type="checkbox" id="geography" name="topics" value="geography" />
+        <label for="geography">Geography</label>
       </div>
 
       <div>
-        <input type="checkbox" id="entertainment_books" name="entertainment_books" />
-        <label for="Entertainment: Books">Entertainment: Books</label>
+        <input type="checkbox" id="entertainment_books" name="topics" value="entertainment_books" />
+        <label for="entertainment_books">Entertainment: Books</label>
       </div>
 
       <div>
-        <input type="checkbox" id="entertainment_film_tv" name="entertainment_film_tv" />
-        <label for="Entertainment: Film & TV">Entertainment: Film & TV</label>
+        <input type="checkbox" id="entertainment_film_tv" name="topics" value="entertainment_film_tv" />
+        <label for="entertainment_film_tv">Entertainment: Film & TV</label>
       </div>
     </div>
   </fieldset>
 
-  <br> <div>
+  <br>
+  <div>
     <span id="loading-quiz" class="htmx-indicator">...</span>
     <button type="submit">Generate Quiz!</button>
   </div>

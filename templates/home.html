@@ -11,18 +11,15 @@
   <body>
      <nav>
        <h1>TrivialLM</h1>
-       <ul>
-         <li>
-           <a href="#" class="button-link"
-              hx-get="/page-create-quiz"
-              hx-swap="innerHTML"
-              hx-target="#main-content"
-              hx-indicator="#loading-quiz">
-               Create Quiz
-               <span id="loading-quiz" class="htmx-indicator">...</span>
-           </a>
-         </li>
-       </ul>
+       <a href="#" class="button-link"
+          hx-get="/page-create-quiz"
+          hx-swap="innerHTML"
+          hx-target="#main-content"
+          hx-push-url="true"
+          hx-indicator="#loading-quiz">
+           Create Quiz
+           <span id="loading-quiz" class="htmx-indicator">...</span>
+       </a>
      </nav>
      <main id="main-content">
        <section id="leagues-section">
@@ -33,9 +30,26 @@
                 hx-get="/leagues/{{ league.id }}"
                 hx-target="#main-content"
                 hx-swap="innerHTML"
+                hx-push-url="true"
                 hx-indicator="#loading-league">
                 <div id="loading-league" class="htmx-indicator">...</div>
                 {{ league.name }} - {% for team in league.teams %}{{ team.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+              </a>
+            {% endfor %}
+           </div>
+       </section>
+       <section id="quiz-section">
+           <h2>My Quizzes</h2>
+           <div id="quiz-list">
+            {% for quiz in quizzes %}
+              <a href="#" 
+                hx-get="/quizzes/{{ quiz.id }}"
+                hx-target="#main-content"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                hx-indicator="#loading-quiz">
+                <div id="loading-quiz" class="htmx-indicator">...</div>
+                {{ quiz.id }}
               </a>
             {% endfor %}
            </div>
