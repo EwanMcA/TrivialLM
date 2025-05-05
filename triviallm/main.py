@@ -46,6 +46,10 @@ def create_quiz(request: Request):
     )
 
 
+################################################################
+# Quiz Management
+################################################################
+
 class Question(BaseModel):
     question: str
     choices: list[str]
@@ -84,6 +88,19 @@ def generate_quiz(
         }
     )
 
+
+@app.post("/quizzes")
+def store_quiz(body: Quiz, db_session: Annotated[Session, Depends(get_session)]) -> Quiz:
+    quiz = Quiz(name="Quiz", questions=body.questions)
+    db_session.add(quiz)
+    db_session.commit()
+    db_session.refresh(quiz)
+    return quiz
+
+
+################################################################
+# League and Team Management
+################################################################
 
 @app.get("/leagues/{league_id}", response_class=HTMLResponse)
 def league(
